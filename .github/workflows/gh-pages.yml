@@ -1,0 +1,39 @@
+name: gh-pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setting variable
+        env:
+          ANALYTICS_LA_ID: ${{ secrets.ANALYTICS_LA_ID }}
+          GISCUS_CATEGORY: ${{ secrets.GISCUS_CATEGORY }}
+          GISCUS_CATEGORYID: ${{ secrets.GISCUS_CATEGORYID }}
+          GISCUS_REPO: ${{ secrets.GISCUS_REPO }}
+          GISCUS_REPOID: ${{ secrets.GISCUS_REPOID }}
+          UTER_LABEL: ${{ secrets.UTER_LABEL }}
+          UTER_REPO_NAME: ${{ secrets.UTER_REPO_NAME }}
+        run: sh .github/scripts/replace-vars.sh
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Deploy Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: "./public"

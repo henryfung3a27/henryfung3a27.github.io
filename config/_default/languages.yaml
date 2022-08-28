@@ -1,0 +1,14 @@
+# Multi-languages configure
+
+zh-cn:
+  title: Hugo NexT
+  languageName: 中文
+  languageCode: zh-CN
+  hasCJKLanguage: true
+  weight: 1
+en:
+  title: Fung Tech
+  languageName: English
+  languageCode: en
+  hasCJKLanguage: false
+  weight: 2
